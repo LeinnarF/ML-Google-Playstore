@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Machine Learning Models - Executive Summary</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+        
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+        
+        header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+        
+        header p {
+            font-size: 1.2em;
+            opacity: 0.95;
+        }
+        
+        .content {
+            padding: 40px;
+        }
+        
+        section {
+            margin-bottom: 50px;
+        }
+        
+        h2 {
+            color: #667eea;
+            font-size: 2em;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #667eea;
+        }
+        
+        h3 {
+            color: #764ba2;
+            font-size: 1.5em;
+            margin: 25px 0 15px 0;
+        }
+        
+        h4 {
+            color: #764ba2;
+            font-size: 1.3em;
+            margin-bottom: 10px;
+        }
+        
+        .overview-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+        
+        .stat-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+            transition: transform 0.3s ease;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .stat-card h3 {
+            color: white;
+            font-size: 3em;
+            margin: 10px 0;
+        }
+        
+        .stat-card p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+        
+        .key-findings {
+            background: linear-gradient(135deg, #667eea15 0%, #764ba215 100%);
+            padding: 25px;
+            border-radius: 15px;
+            margin: 20px 0;
+        }
+        
+        .key-findings ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        
+        .key-findings li {
+            padding: 10px 0 10px 30px;
+            position: relative;
+        }
+        
+        .key-findings li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #51cf66;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+        
+        .code-block {
+            background: #1e1e2e;
+            border-radius: 10px;
+            margin: 15px 0;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .code-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 8px 15px;
+            font-size: 0.85em;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .code-header .dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+        
+        .code-header .dot.red { background: #ff5f56; }
+        .code-header .dot.yellow { background: #ffbd2e; }
+        .code-header .dot.green { background: #27ca40; }
+        
+        .code-block pre {
+            margin: 0;
+            padding: 15px 20px;
+            overflow-x: auto;
+            font-family: 'Fira Code', 'Consolas', 'Monaco', monospace;
+            font-size: 0.9em;
+            line-height: 1.5;
+            color: #cdd6f4;
+        }
+        
+        .code-block code {
+            color: #cdd6f4;
+        }
+        
+        .keyword { color: #cba6f7; font-weight: bold; }
+        .string { color: #a6e3a1; }
+        .function { color: #89b4fa; }
+        .comment { color: #6c7086; font-style: italic; }
+        .number { color: #fab387; }
+        .operator { color: #89dceb; }
+        .variable { color: #f5c2e7; }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        th {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+        }
+        
+        td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #e9ecef;
+        }
+        
+        tr:hover {
+            background: #f8f9fa;
+        }
+        
+        .highlight {
+            background: #fff3bf;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-weight: 600;
+        }
+        
+        .winner {
+            background: #51cf66;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+        }
+        
+        footer {
+            background: #2c3e50;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🤖 Machine Learning Models</h1>
+            <p>Executive Summary - App Success Prediction & Model Comparison</p>
+        </header>
+        
+        <div class="content">
+            <section>
+                <h2>🎯 Problem Definition</h2>
+                
+                <div class="key-findings">
+                    <h3>Business Objective</h3>
+                    <p style="font-size: 1.1em; padding-left: 0;"><strong>Predict whether a Google Play Store app will achieve "HIT" status (≥100,000 installs) or "MISS" status (<100,000 installs)</strong></p>
+                </div>
+                
+                <div class="code-block">
+                    <div class="code-header">
+                        <span class="dot red"></span>
+                        <span class="dot yellow"></span>
+                        <span class="dot green"></span>
+                        Python - Target Variable Creation
+                    </div>
+                    <pre><code><span class="comment"># Create Success binary target</span>
+df[<span class="string">'Success'</span>] = (df[<span class="string">'Installs'</span>] >= <span class="number">100_000</span>).astype(<span class="variable">int</span>)
+
+<span class="comment"># Select features and target variable</span>
+features = [
+    <span class="string">'Category'</span>, <span class="string">'Size_varies'</span>, <span class="string">'Size'</span>, 
+    <span class="string">'Type'</span>, <span class="string">'Price'</span>, <span class="string">'Content Rating'</span>,
+]
+
+X = df[features]
+y = df[<span class="string">'Success'</span>]</code></pre>
+                </div>
+                
+            </section>
+            
+            <section>
+                <h2>🔧 Data Preprocessing</h2>
+                
+                <h3>1. Handling Missing & Categorical Data</h3>
+                <div class="code-block">
+                    <div class="code-header">
+                        <span class="dot red"></span>
+                        <span class="dot yellow"></span>
+                        <span class="dot green"></span>
+                        Python
+                    </div>
+                    <pre><code><span class="comment"># Handle 'Varies with device' in Size column</span>
+df[<span class="string">'Size_varies'</span>] = (df[<span class="string">'Size'</span>] == <span class="string">'Varies with device'</span>).astype(<span class="variable">int</span>)
+df[<span class="string">'Size'</span>] = pd.to_numeric(df[<span class="string">'Size'</span>], errors=<span class="string">'coerce'</span>)
+
+<span class="comment"># Fill missing with category median, then overall median</span>
+df[<span class="string">'Size'</span>] = df.groupby(<span class="string">'Category'</span>)[<span class="string">'Size'</span>].transform(
+    <span class="keyword">lambda</span> x: x.fillna(x.median())
+)
+df[<span class="string">'Size'</span>].fillna(df[<span class="string">'Size'</span>].median(), inplace=<span class="keyword">True</span>)</code></pre>
+                </div>
+                
+                <h3>2. Categorical Encoding</h3>
+                <div class="code-block">
+                    <div class="code-header">
+                        <span class="dot red"></span>
+                        <span class="dot yellow"></span>
+                        <span class="dot green"></span>
+                        Python
+                    </div>
+                    <pre><code><span class="comment"># One-hot encoding for categorical features</span>
+X_encoded = pd.get_dummies(X, drop_first=<span class="keyword">True</span>)</code></pre>
+                </div>
+                
+                <h3>3. Train-Test Split</h3>
+                <div class="code-block">
+                    <div class="code-header">
+                        <span class="dot red"></span>
+                        <span class="dot yellow"></span>
+                        <span class="dot green"></span>
+                        Python
+                    </div>
+                    <pre><code><span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> train_test_split
+
+X_train, X_test, y_train, y_test = train_test_split(
+    X_encoded, y, 
+    test_size=<span class="number">0.2</span>, 
+    random_state=<span class="number">67</span>
+)</code></pre>
+                </div>
+            </section>
+            
+            
+            <section>
+                <h2>📈 Model Training & Optimization</h2>
+                
+                <h3>Random Forest</h3>
+                <div class="code-block">
+                    <div class="code-header">
+                        <span class="dot red"></span>
+                        <span class="dot yellow"></span>
+                        <span class="dot green"></span>
+                        Python
+                    </div>
+                    <pre><code><span class="keyword">from</span> sklearn.ensemble <span class="keyword">import</span> RandomForestClassifier
+
+<span class="comment"># Train Random Forest</span>
+rf_classifier = RandomForestClassifier(
+    n_estimators=<span class="number">100</span>, 
+    random_state=<span class="number">67</span>, 
+    n_jobs=<span class="number">-1</span>
+)
+rf_classifier.fit(X_train, y_train)
+
+<span class="comment"># Predict and evaluate</span>
+y_pred = rf_classifier.predict(X_test)
+accuracy = rf_classifier.score(X_test, y_test)
+<span class="variable">print</span>(<span class="string">f'Test Accuracy: {accuracy:.2%}'</span>)</code></pre>
+                </div>
+                
+                <h3>K-Nearest Neighbors</h3>
+                <div class="code-block">
+                    <div class="code-header">
+                        <span class="dot red"></span>
+                        <span class="dot yellow"></span>
+                        <span class="dot green"></span>
+                        Python
+                    </div>
+                    <pre><code><span class="keyword">from</span> sklearn.neighbors <span class="keyword">import</span> KNeighborsClassifier
+<span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> cross_val_score
+
+<span class="comment"># K-value optimization via cross-validation</span>
+best_k = <span class="number">0</span>
+best_score = <span class="number">0</span>
+
+<span class="keyword">for</span> k <span class="keyword">in</span> <span class="variable">range</span>(<span class="number">1</span>, <span class="number">51</span>, <span class="number">2</span>):
+    knn_temp = KNeighborsClassifier(n_neighbors=k)
+    scores = cross_val_score(
+        knn_temp, X_train, y_train, 
+        cv=<span class="number">5</span>, 
+        scoring=<span class="string">'f1_weighted'</span>
+    )
+    mean_score = scores.mean()
+    
+    <span class="keyword">if</span> mean_score > best_score:
+        best_score = mean_score
+        best_k = k
+
+<span class="comment"># Train final model with optimal K</span>
+knn_final = KNeighborsClassifier(n_neighbors=best_k)
+knn_final.fit(X_train, y_train)
+
+<span class="comment"># Evaluate</span>
+y_pred_knn = knn_final.predict(X_test)
+accuracy_knn = knn_final.score(X_test, y_test)
+<span class="variable">print</span>(<span class="string">f'Optimal K: {best_k}'</span>)
+<span class="variable">print</span>(<span class="string">f'Test Accuracy: {accuracy_knn:.2%}'</span>)</code></pre>
+                </div>
+            </section>
+            
+            <section>
+                <h2>📊 Model Evaluation</h2>
+                
+                <div class="code-block">
+                    <div class="code-header">
+                        <span class="dot red"></span>
+                        <span class="dot yellow"></span>
+                        <span class="dot green"></span>
+                        Python
+                    </div>
+                    <pre><code><span class="keyword">from</span> sklearn.metrics <span class="keyword">import</span> (
+    classification_report, 
+    confusion_matrix, 
+    roc_auc_score
+)
+
+<span class="comment"># Classification Report</span>
+<span class="variable">print</span>(<span class="string">"Classification Report:"</span>)
+<span class="variable">print</span>(classification_report(
+    y_test, y_pred, 
+    target_names=[<span class="string">'Miss'</span>, <span class="string">'Hit'</span>]
+))
+
+                </div>
+					
+							<h4>Accuracy of Random Forest: 70%</h4>
+							<h4>Accuracy of K-Nearest Neighbors: 94%</h4>
+
+            </section>
+            
+            <section>
+                <h2>🎲 Interactive Prediction System</h2>
+                
+                <div class="code-block">
+                    <div class="code-header">
+                        <span class="dot red"></span>
+                        <span class="dot yellow"></span>
+                        <span class="dot green"></span>
+                        Python
+                    </div>
+                    <pre><code><span class="keyword">def</span> <span class="function">predict_app_success</span>(model, training_columns):
+    <span class="variable">print</span>(<span class="string">"\n" + "="*40</span>)
+    <span class="variable">print</span>(<span class="string">"APP SUCCESS PREDICTOR (100k+ Installs)"</span>)
+    <span class="variable">print</span>(<span class="string">"="*40</span>)
+
+    <span class="comment"># Collect user inputs</span>
+    category = <span class="variable">input</span>(<span class="string">"Enter Category (e.g., GAME, BUSINESS): "</span>)
+    app_type = <span class="variable">input</span>(<span class="string">"Enter Type (Free/Paid): "</span>)
+    price = <span class="variable">float</span>(<span class="variable">input</span>(<span class="string">"Enter Price (0 for free): "</span>))
+    content_rating = <span class="variable">input</span>(<span class="string">"Enter Content Rating (e.g., Everyone): "</span>)
+    size_varies = <span class="variable">int</span>(<span class="variable">input</span>(<span class="string">"Size varies with device? (0=No, 1=Yes): "</span>))
+    size = <span class="variable">float</span>(<span class="variable">input</span>(<span class="string">"Enter Size in KB (if known): "</span>))
+    rating = <span class="variable">float</span>(<span class="variable">input</span>(<span class="string">"Expected Rating (1.0-5.0): "</span>))
+    reviews = <span class="variable">int</span>(<span class="variable">input</span>(<span class="string">"Expected number of reviews: "</span>))
+    
+    <span class="comment"># Create input dataframe and encode</span>
+    input_data = pd.DataFrame([{
+        <span class="string">'Category'</span>: category,
+        <span class="string">'Size_varies'</span>: size_varies,
+        <span class="string">'Size'</span>: size,
+        <span class="string">'Type'</span>: app_type,
+        <span class="string">'Price'</span>: price,
+        <span class="string">'Content Rating'</span>: content_rating,
+        <span class="string">'Rating'</span>: rating,
+        <span class="string">'Reviews'</span>: reviews
+    }])
+    
+    input_encoded = pd.get_dummies(input_data)
+    input_encoded = input_encoded.reindex(columns=training_columns, fill_value=<span class="number">0</span>)
+    
+    <span class="comment"># Make prediction</span>
+    prediction = model.predict(input_encoded)[<span class="number">0</span>]
+    probability = model.predict_proba(input_encoded)[<span class="number">0</span>][<span class="number">1</span>]
+    
+    <span class="keyword">if</span> prediction == <span class="number">1</span>:
+        <span class="variable">print</span>(<span class="string">f"\n✅ Prediction: HIT (High Volume Expected)"</span>)
+        <span class="variable">print</span>(<span class="string">f"Confidence: {probability * 100:.1f}%"</span>)
+    <span class="keyword">else</span>:
+        <span class="variable">print</span>(<span class="string">f"\n❌ Prediction: MISS (Low Volume Expected)"</span>)
+        <span class="variable">print</span>(<span class="string">f"Confidence: {(1 - probability) * 100:.1f}%"</span>)
+
+<span class="comment"># Run predictor</span>
+predict_app_success(knn_final, X_encoded.columns)</code></pre>
+                </div>
+            </section>
+            
+            <section>
+                <h2>💡 Key Takeaways</h2>
+                
+                <div class="key-findings">
+                    <h3>Business Value</h3>
+                    <ul>
+                        <li><strong>94% Accuracy:</strong> Highly reliable predictions for app success</li>
+                        <li><strong>Early Decision Making:</strong> Predict success before app launch</li>
+                        <li><strong>Resource Optimization:</strong> Focus investment on high-potential apps</li>
+                        <li><strong>Market Insights:</strong> Understand which features drive 100k+ installs</li>
+                        <li><strong>Competitive Advantage:</strong> Data-driven app development strategy</li>
+                    </ul>
+                </div>
+                
+            </section>
+        </div>
+        
+        <footer>
+            <p>Google Play Store Machine Learning Analysis | Generated from Jupyter Notebook</p>
+            <p>App Success Prediction - Binary Classification Models</p>
+        </footer>
+    </div>
+</body>
+</html>

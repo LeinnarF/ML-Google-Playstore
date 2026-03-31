@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exploratory Data Analysis - Executive Summary</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+        
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+        
+        header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+        
+        header p {
+            font-size: 1.2em;
+            opacity: 0.95;
+        }
+        
+        .content {
+            padding: 40px;
+        }
+        
+        section {
+            margin-bottom: 50px;
+        }
+        
+        h2 {
+            color: #667eea;
+            font-size: 2em;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #667eea;
+        }
+        
+        h3 {
+            color: #764ba2;
+            font-size: 1.5em;
+            margin: 25px 0 15px 0;
+        }
+        
+        h4 {
+            color: #764ba2;
+            font-size: 1.3em;
+            margin-bottom: 10px;
+        }
+        
+        .overview-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+        
+        .stat-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+            transition: transform 0.3s ease;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .stat-card h3 {
+            color: white;
+            font-size: 3em;
+            margin: 10px 0;
+        }
+        
+        .stat-card p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+        
+        .key-findings {
+            background: linear-gradient(135deg, #667eea15 0%, #764ba215 100%);
+            padding: 25px;
+            border-radius: 15px;
+            margin: 20px 0;
+        }
+        
+        .key-findings ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        
+        .key-findings li {
+            padding: 10px 0 10px 30px;
+            position: relative;
+        }
+        
+        .key-findings li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #51cf66;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+        
+        .code-block {
+            background: #1e1e2e;
+            border-radius: 10px;
+            margin: 15px 0;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .code-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 8px 15px;
+            font-size: 0.85em;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .code-header .dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+        
+        .code-header .dot.red { background: #ff5f56; }
+        .code-header .dot.yellow { background: #ffbd2e; }
+        .code-header .dot.green { background: #27ca40; }
+        
+        .code-block pre {
+            margin: 0;
+            padding: 15px 20px;
+            overflow-x: auto;
+            font-family: 'Fira Code', 'Consolas', 'Monaco', monospace;
+            font-size: 0.9em;
+            line-height: 1.5;
+            color: #cdd6f4;
+        }
+        
+        .code-block code {
+            color: #cdd6f4;
+        }
+        
+        .keyword { color: #cba6f7; font-weight: bold; }
+        .string { color: #a6e3a1; }
+        .function { color: #89b4fa; }
+        .comment { color: #6c7086; font-style: italic; }
+        .number { color: #fab387; }
+        .operator { color: #89dceb; }
+        .variable { color: #f5c2e7; }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        th {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+        }
+        
+        td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #e9ecef;
+        }
+        
+        tr:hover {
+            background: #f8f9fa;
+        }
+        
+        .highlight {
+            background: #fff3bf;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-weight: 600;
+        }
+        
+        footer {
+            background: #2c3e50;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📊 Exploratory Data Analysis (EDA)</h1>
+            <p>Executive Summary - Statistical Analysis & Data Insights</p>
+        </header>
+        
+        <div class="content">
+            <section>
+                <h2>🎯 Analysis Overview</h2>
+                
+                <div class="code-block">
+                    <div class="code-header">
+                        <span class="dot red"></span>
+                        <span class="dot yellow"></span>
+                        <span class="dot green"></span>
+                        Python - Setup & Data Loading
+                    </div>
+                    <pre><code><span class="keyword">import</span> pandas <span class="keyword">as</span> pd
+<span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt
+
+pd.set_option(<span class="string">"display.max_columns"</span>, <span class="keyword">None</span>)
+pd.set_option(<span class="string">"display.width"</span>, <span class="number">120</span>)
+plt.style.use(<span class="string">"seaborn-v0_8-whitegrid"</span>)
+
+<span class="comment"># Load cleaned dataset</span>
+data_path = <span class="string">"dataset/googleplaystore_cleaned.csv"</span>
+df = pd.read_csv(data_path)</code></pre>
+                </div>
+                
+                <div class="overview-grid">
+                    <div class="stat-card">
+                        <p>Dataset Size</p>
+                        <h3>9,659</h3>
+                        <p>apps analyzed</p>
+                    </div>
+                    <div class="stat-card">
+                        <p>Total Columns</p>
+                        <h3>9</h3>
+                        <p>features</p>
+                    </div>
+                    <div class="stat-card">
+                        <p>Numeric Features</p>
+                        <h3>4</h3>
+                        <p>analyzed</p>
+                    </div>
+                    <div class="stat-card">
+                        <p>Categories</p>
+                        <h3>33</h3>
+                        <p>app types</p>
+                    </div>
+                </div>
+                
+                <div class="key-findings">
+                    <h3>📋 Analysis Objectives</h3>
+                    <ul>
+                        <li>Compute statistical measures: mean, median, and variance</li>
+                        <li>Identify high-variance features and outliers</li>
+                        <li>Analyze distributions of numeric columns</li>
+                        <li>Compare performance across app categories</li>
+                        <li>Visualize patterns in rating, reviews, installs, and pricing</li>
+                    </ul>
+                </div>
+            </section>
+            
+            <section>
+                <h2>📈 Statistical Analysis Workflow</h2>
+                
+                <h3>1. Selecting Numeric Columns</h3>
+                <div class="code-block">
+                    <div class="code-header">
+                        <span class="dot red"></span>
+                        <span class="dot yellow"></span>
+                        <span class="dot green"></span>
+                        Python
+                    </div>
+                    <pre><code><span class="comment"># Identify numeric columns</span>
+numeric_df = df.select_dtypes(include=<span class="string">"number"</span>)
+<span class="variable">print</span>(<span class="string">"Numeric columns:"</span>, <span class="variable">list</span>(numeric_df.columns))
+
+<span class="comment"># Output: ['Rating', 'Reviews', 'Installs', 'Price']</span></code></pre>
+                </div>
+                
+                <h3>2. Computing Summary Statistics</h3>
+                <div class="code-block">
+                    <div class="code-header">
+                        <span class="dot red"></span>
+                        <span class="dot yellow"></span>
+                        <span class="dot green"></span>
+                        Python
+                    </div>
+                    <pre><code><span class="comment"># Calculate statistical measures</span>
+mean_stats = numeric_df.mean()
+median_stats = numeric_df.median()
+variance_stats = numeric_df.var()
+
+<span class="comment"># Create consolidated summary table</span>
+eda_summary = pd.DataFrame({
+    <span class="string">"mean"</span>: mean_stats,
+    <span class="string">"median"</span>: median_stats,
+    <span class="string">"variance"</span>: variance_stats
+})
+
+<span class="comment"># Sort by variance (highest variability first)</span>
+eda_summary = eda_summary.sort_values(by=<span class="string">"variance"</span>, ascending=<span class="keyword">False</span>)</code></pre>
+                </div>
+            </section>
+            
+            <section>
+                <h2>📊 Key Statistical Findings</h2>
+                
+                <h3>Overall Dataset Statistics</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Feature</th>
+                            <th>Mean</th>
+                            <th>Median</th>
+                            <th>Variance</th>
+                            <th>Key Insight</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Installs</strong></td>
+                            <td>7.78M</td>
+                            <td class="highlight">100K</td>
+                            <td>2.89×10¹⁵</td>
+                            <td>Massive spread; few viral apps</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Reviews</strong></td>
+                            <td>216,593</td>
+                            <td class="highlight">967</td>
+                            <td>3.35×10¹²</td>
+                            <td>Extreme right skew; blockbusters dominate</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Price</strong></td>
+                            <td>$1.10</td>
+                            <td class="highlight">$0.00</td>
+                            <td>283.99</td>
+                            <td>50%+ apps are free; paid apps vary widely</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Rating</strong></td>
+                            <td>3.83</td>
+                            <td class="highlight">4.20</td>
+                            <td>1.59</td>
+                            <td>Most apps rated 4.2+; moderate spread</td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+            </section>
+            
+            <section>
+                <h2>🏆 Category Performance Analysis</h2>
+                
+                <h3>Top 10 Categories by App Count</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Rank</th>
+                            <th>Category</th>
+                            <th># Apps</th>
+                            <th>Avg Rating</th>
+                            <th>Median Rating</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr style="background: #d3f9d8;">
+                            <td>1</td>
+                            <td><strong>GAME</strong></td>
+                            <td>959</td>
+                            <td class="highlight">4.17</td>
+                            <td>4.30</td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td><strong>FAMILY</strong></td>
+                            <td>1,832</td>
+                            <td>3.95</td>
+                            <td>4.20</td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td><strong>TOOLS</strong></td>
+                            <td>827</td>
+                            <td>3.77</td>
+                            <td>4.20</td>
+                        </tr>
+                        <tr>
+                            <td>4</td>
+                            <td><strong>BUSINESS</strong></td>
+                            <td>420</td>
+                            <td>3.14</td>
+                            <td>4.00</td>
+                        </tr>
+                        <tr>
+                            <td>5</td>
+                            <td><strong>MEDICAL</strong></td>
+                            <td>395</td>
+                            <td>3.39</td>
+                            <td>4.20</td>
+                        </tr>
+                        <tr>
+                            <td>6</td>
+                            <td><strong>PERSONALIZATION</strong></td>
+                            <td>376</td>
+                            <td>3.86</td>
+                            <td>4.30</td>
+                        </tr>
+                        <tr>
+                            <td>7</td>
+                            <td><strong>PRODUCTIVITY</strong></td>
+                            <td>374</td>
+                            <td>3.67</td>
+                            <td>4.20</td>
+                        </tr>
+                        <tr>
+                            <td>8</td>
+                            <td><strong>LIFESTYLE</strong></td>
+                            <td>369</td>
+                            <td>3.61</td>
+                            <td>4.10</td>
+                        </tr>
+                        <tr>
+                            <td>9</td>
+                            <td><strong>FINANCE</strong></td>
+                            <td>345</td>
+                            <td>3.87</td>
+                            <td>4.30</td>
+                        </tr>
+                        <tr>
+                            <td>10</td>
+                            <td><strong>SPORTS</strong></td>
+                            <td>325</td>
+                            <td>3.68</td>
+                            <td>4.30</td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <div class="code-block">
+                    <div class="code-header">
+                        <span class="dot red"></span>
+                        <span class="dot yellow"></span>
+                        <span class="dot green"></span>
+                        Python - Category Analysis
+                    </div>
+                    <pre><code><span class="comment"># Group by category and compute statistics</span>
+numeric_cols = df.select_dtypes(include=<span class="string">"number"</span>).columns.tolist()
+
+category_summary = df.groupby(<span class="string">"Category"</span>)[numeric_cols].agg([
+    <span class="string">"mean"</span>, <span class="string">"median"</span>, <span class="string">"var"</span>
+])
+
+<span class="comment"># Analyze specific metric by category</span>
+metric = <span class="string">"Rating"</span>
+cat_metric = (
+    df.groupby(<span class="string">"Category"</span>)[metric]
+    .agg(mean=<span class="string">"mean"</span>, median=<span class="string">"median"</span>, variance=<span class="string">"var"</span>, count=<span class="string">"count"</span>)
+    .sort_values(<span class="string">"count"</span>, ascending=<span class="keyword">False</span>)
+)</code></pre>
+                </div>
+                
+                <div class="key-findings">
+                    <h3>💡 Category Insights</h3>
+                    <ul>
+                        <li><strong>GAME leads in quality:</strong> Highest average rating (4.17)</li>
+                        <li><strong>FAMILY dominates volume:</strong> 1,832 apps but room for quality improvement (3.95 avg)</li>
+                        <li><strong>BUSINESS struggles:</strong> Lowest average rating (3.14) indicates quality issues</li>
+                        <li><strong>Consistent performers:</strong> SPORTS, PERSONALIZATION, GAME have 4.30 median ratings</li>
+                        <li><strong>Median > Mean pattern:</strong> Most categories have positive skew (high-rated outliers)</li>
+                    </ul>
+                </div>
+            </section>
+            
+            </section>
+        </div>
+        
+        <footer>
+            <p>Google Play Store Exploratory Data Analysis | Generated from Jupyter Notebook</p>
+            <p>Statistical Analysis & Data Visualization</p>
+        </footer>
+    </div>
+</body>
+</html>
