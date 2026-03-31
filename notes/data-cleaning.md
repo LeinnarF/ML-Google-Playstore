@@ -83,7 +83,7 @@ df.loc[condition, 'target_column'] = new_value
 
 Where:
 - `condition`: A boolean expression that specifies which rows to select.
-- `'Column'`: The name of the column where you want to assign the new value.
+- `'target_column'`: The name of the column where you want to assign the new value.
 
 
 After this, the next step we did is to align the Ratings with the Reviews. We noticed that some apps had a rating but no reviews, which is not possible. So we set the rating to zero for those apps.
